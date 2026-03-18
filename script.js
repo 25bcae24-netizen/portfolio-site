@@ -58,29 +58,25 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', revealOnScroll);
 
     // Form Submission (Simulated)
-    const contactForm = document.querySelector('.contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const btn = contactForm.querySelector('button');
-            const originalText = btn.innerText;
-            
-            btn.innerText = 'Sending...';
-            btn.disabled = true;
+const form = document.querySelector(".contact-form");
 
-            setTimeout(() => {
-                btn.innerText = 'Message Sent!';
-                btn.style.background = '#10b981'; // Success Green
-                contactForm.reset();
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
 
-                setTimeout(() => {
-                    btn.innerText = originalText;
-                    btn.disabled = false;
-                    btn.style.background = ''; // Reset to CSS
-                }, 3000);
-            }, 1500);
-        });
-    }
+  const formData = new FormData(form);
+
+  fetch("/", {
+    method: "POST",
+    body: formData
+  })
+  .then(() => {
+    alert("Message sent successfully!");
+    form.reset();
+  })
+  .catch(() => {
+    alert("Error sending message");
+  });
+});
 
     // Smooth Scrolling for all anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
